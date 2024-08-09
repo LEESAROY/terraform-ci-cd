@@ -36,6 +36,8 @@ jobs:
         with:
           name: terraform-plan
           path: plan.txt
+      - name: Display Terraform Plan
+        run: cat plan.txt
       - name: Apply Terraform (on push to main)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: terraform apply -var="core_count=1" -var="thread_count=2" -auto-approve
