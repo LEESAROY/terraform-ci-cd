@@ -73,7 +73,7 @@ jobs:
       - name: Terraform Destroy
         if: github.event_name == 'workflow_dispatch'
         id: destroy
-        run: |
+        run:
           echo "Running terraform destroy..."
           terraform destroy -var="core_count=1" -var="thread_count=2" -auto-approve | tee destroy.txt
       - name: Upload Terraform Destroy Output
@@ -85,3 +85,6 @@ jobs:
       - name: Display Terraform Destroy Output
         if: github.event_name == 'workflow_dispatch'
         run: cat destroy.txt
+      - name: Testing
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "hello world"
