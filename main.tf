@@ -1,9 +1,9 @@
 provider "aws" {
-  region = "us-west-2"
+  region = "us-east-2"
 }
 
 resource "aws_instance" "example" {
-  ami = "ami-0c55b159cbfafe1f0"
+  ami = "ami-0ee3e5d4a5112ce6a"
   instance_type = "t2.micro"
   count = var.core_count
 
