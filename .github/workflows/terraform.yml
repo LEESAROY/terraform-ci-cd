@@ -30,15 +30,10 @@ jobs:
         run: terraform validate
       - name: Terraform Plan
         id: plan
-        run: terraform plan -var="core_count=1" -var="thread_count=2" | tee plan.txt
-      - name: Upload Terraform Plan
-        uses: actions/upload-artifact@v3
-        with:
-          name: terraform-plan
-          path: plan.txt
+        run: terraform plan -var="core_count=1" -var="thread_count=2"
       - name: Apply Terraform (on push to main)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: terraform apply -var="core_count=1" -var="thread_count=2" -auto-approve
+        run: terraform apply -var="core_count=1" -var="thread_count=2" -auto-
 
   destroy:
     name: Terraform Destroy
@@ -57,5 +52,4 @@ jobs:
       - name: Initialize Terraform
         run: terraform init
       - name: Terraform Destroy
-        if: github.event_name == 'workflow_dispatch'
-        run: terraform destroy -var="core_count=1" -var="thread_count=2" -auto-approve
+        run: terraform destroy -var="core_count=1" -var="thread_count=2" -auto-
