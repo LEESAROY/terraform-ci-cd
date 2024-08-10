@@ -70,21 +70,23 @@ jobs:
           terraform_version: 1.3.5
       - name: Initialize Terraform
         run: terraform init
-      - name: Terraform Destroy
+      - name: Run Terraform Destroy
         if: github.event_name == 'workflow_dispatch'
         id: destroy
-        run:
+        run: |
           echo "Running terraform destroy..."
-          terraform destroy -var="core_count=1" -var="thread_count=2" -auto-approve | tee destroy.txt
+          terraform destroy -var="core_count=1" -var="thread_count=2" -auto-approve > destroy.txt 2>&1
+      - name: Check if destroy.txt exists
+        if: github.event_name == 'workflow_dispatch'
+        run: ls -l destroy.txt
+      - name: Display Terraform Destroy Output
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "Displaying terraform destroy output..."
+          cat destroy.txt
       - name: Upload Terraform Destroy Output
         if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v3
         with:
           name: terraform-destroy-output
           path: destroy.txt
-      - name: Display Terraform Destroy Output
-        if: github.event_name == 'workflow_dispatch'
-        run: cat destroy.txt
-      - name: Testing
-        if: github.event_name == 'workflow_dispatch'
-        run: echo "hello world"
